@@ -1,6 +1,7 @@
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import route.RouterServiceImpl;
 
 public class RouterImplTest {
     //Usage:
@@ -12,7 +13,7 @@ public class RouterImplTest {
 //router.route("/bar") -> "barFunc"
     @Test
     public void checkRouteIsAdded() {
-        Router router = new RouterImpl();
+        Router router = createServices();
         router.addRoute("/bar", "barFunc");
         router.addRoute("/foo", "fooFunc");
 
@@ -20,9 +21,13 @@ public class RouterImplTest {
         Assertions.assertEquals("barFunc", actualReturnedRoute);
     }
 
+    private Router createServices() {
+        return new RouterController(new RouterServiceImpl());
+    }
+
     @Test
     public void checkRouteIsAddedAsWildCard() {
-        Router router = new RouterImpl();
+        Router router = createServices();
 
         router.addRoute("/foo", "fooFunc");
         router.addRoute("/far*", "fooFuncReg");
@@ -41,7 +46,7 @@ public class RouterImplTest {
 
     @Test
     public void checkRouteNullForNull() {
-        Router router = new RouterImpl();
+        Router router = createServices();
 
         String actualReturnedRoute = router.route("/bar");
         Assertions.assertNull(actualReturnedRoute);
@@ -50,7 +55,7 @@ public class RouterImplTest {
 
     @Test
     public void checkRouteNullForEmptyOrNull() {
-        Router router = new RouterImpl();
+        Router router = createServices();
 
         router.addRoute("", "");
         router.addRoute(null, "");
